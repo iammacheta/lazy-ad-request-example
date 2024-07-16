@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy Loading Ads</title>
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+  <script>
+    window.googletag = window.googletag || { cmd: [] };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      googletag.cmd.push(function () {
+        // Define the ad slots but do not display them yet
+        googletag.defineSlot('/21974715207/web-test-horizontal-display-banner', [728, 90], 'ad-slot-1').addService(googletag.pubads());
+        googletag.defineSlot('/21974715207/web-tft-leaderboard-right-banner-l', [300, 600], 'ad-slot-2').addService(googletag.pubads());
+        googletag.pubads();
+        googletag.enableServices();
+      });
+
+      let firstAdLoaded = false;
+      let secondAdLoaded = false;
+
+      window.addEventListener('scroll', function () {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (!firstAdLoaded && scrollTop > 400) {
+          googletag.cmd.push(function () {
+            googletag.display('ad-slot-1');
+          });
+          firstAdLoaded = true;
+        }
+
+        if (!secondAdLoaded && scrollTop > 700) {
+          googletag.cmd.push(function () {
+            googletag.display('ad-slot-2');
+          });
+          secondAdLoaded = true;
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div style="height: 800px;">Scroll down to load the first ad</div>
+  <div id="ad-slot-1" style="width: 728px; height: 90px; background-color: #f0f0f0;">Ad Slot 1</div>
+  <div style="height: 600px;">Scroll down to load the second ad</div>
+  <div id="ad-slot-2" style="width: 300px; height: 600px; background-color: #f0f0f0;">Ad Slot 2</div>
+</body>
+
+</html>
